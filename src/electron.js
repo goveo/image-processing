@@ -7,7 +7,15 @@ const isDev = require('electron-is-dev');
 let mainWindow;
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+  });
+  mainWindow.webContents.openDevTools();
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:3000'
