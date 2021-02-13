@@ -1,26 +1,26 @@
-import React, { RefObject, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 
-interface Props {
-  imageCanvasRef: RefObject<HTMLCanvasElement>;
-}
+import { ImageContext } from '../context/image/ImageContext';
 
-const InvertWindow: React.FC<Props> = ({ imageCanvasRef }) => {
+const InvertWindow: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const { imageCanvas } = useContext(ImageContext);
 
   const invertImage = useCallback(() => {
     const canvasContext = canvasRef.current?.getContext('2d');
-    const imageCanvasContext = imageCanvasRef.current?.getContext('2d');
+    const imageCanvasContext = imageCanvas?.getContext('2d');
     if (
       canvasContext &&
       canvasRef.current &&
       imageCanvasContext &&
-      imageCanvasRef.current
+      imageCanvas
     ) {
       const imageData = imageCanvasContext.getImageData(
         0,
         0,
-        imageCanvasRef.current.width,
-        imageCanvasRef.current.height,
+        imageCanvas.width,
+        imageCanvas.height,
       );
 
       for (let y = 0; y < imageData.height; y++) {
@@ -32,17 +32,17 @@ const InvertWindow: React.FC<Props> = ({ imageCanvasRef }) => {
         }
       }
 
-      canvasRef.current.height = imageCanvasRef.current.height;
-      canvasRef.current.width = imageCanvasRef.current.width;
+      canvasRef.current.height = imageCanvas.height;
+      canvasRef.current.width = imageCanvas.width;
       canvasContext.putImageData(imageData, 0, 0);
     }
-  }, [imageCanvasRef]);
+  }, [imageCanvas]);
 
   useEffect(() => {
-    if (imageCanvasRef) {
+    if (imageCanvas) {
       invertImage();
     }
-  }, [imageCanvasRef, imageCanvasRef.current?.outerHTML, invertImage]);
+  }, [imageCanvas, imageCanvas?.outerHTML, invertImage]);
 
   return <canvas ref={canvasRef} />;
 };

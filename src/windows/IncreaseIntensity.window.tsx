@@ -1,39 +1,39 @@
 import { MenuItem, Select, Slider, StepLabel } from '@material-ui/core';
 import React, {
-  RefObject,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from 'react';
 import styled from 'styled-components';
 
+import { ImageContext } from '../context/image/ImageContext';
+
 type ColorComponent = 'red' | 'green' | 'blue';
 
-interface Props {
-  imageCanvasRef: RefObject<HTMLCanvasElement>;
-}
-
-const IncreaseIntensityWindow: React.FC<Props> = ({ imageCanvasRef }) => {
+const IncreaseIntensityWindow: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [colorComponent, setColorComponent] = useState<ColorComponent>('red');
   const [intensity, setIntensity] = useState<number>(128);
 
+  const { imageCanvas } = useContext(ImageContext);
+
   const increaseComponentIntensity = useCallback(
     (component: ColorComponent, value = 128) => {
       const canvasContext = canvasRef.current?.getContext('2d');
-      const imageCanvasContext = imageCanvasRef.current?.getContext('2d');
+      const imageCanvasContext = imageCanvas?.getContext('2d');
       if (
         canvasContext &&
         canvasRef.current &&
         imageCanvasContext &&
-        imageCanvasRef.current
+        imageCanvas
       ) {
         const imageData = imageCanvasContext.getImageData(
           0,
           0,
-          imageCanvasRef.current.width,
-          imageCanvasRef.current.height,
+          imageCanvas.width,
+          imageCanvas.height,
         );
 
         for (let y = 0; y < imageData.height; y++) {
@@ -57,23 +57,23 @@ const IncreaseIntensityWindow: React.FC<Props> = ({ imageCanvasRef }) => {
           }
         }
 
-        canvasRef.current.height = imageCanvasRef.current.height;
-        canvasRef.current.width = imageCanvasRef.current.width;
+        canvasRef.current.height = imageCanvas.height;
+        canvasRef.current.width = imageCanvas.width;
         canvasContext.putImageData(imageData, 0, 0);
       }
     },
-    [imageCanvasRef],
+    [imageCanvas],
   );
 
   useEffect(() => {
-    if (imageCanvasRef) {
+    if (imageCanvas) {
       increaseComponentIntensity(colorComponent, intensity);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     colorComponent,
     intensity,
-    imageCanvasRef.current?.outerHTML,
+    imageCanvas?.outerHTML,
     increaseComponentIntensity,
   ]);
 

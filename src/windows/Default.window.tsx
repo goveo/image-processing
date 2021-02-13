@@ -1,20 +1,20 @@
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
-interface Props {
-  imageCanvasRef: RefObject<HTMLCanvasElement>;
-}
+import { ImageContext } from '../context/image/ImageContext';
 
-const DefaultWindow: React.FC<Props> = ({ imageCanvasRef }) => {
+const DefaultWindow: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const { imageCanvas } = useContext(ImageContext);
 
   useEffect(() => {
     const canvasContext = canvasRef.current?.getContext('2d');
-    if (canvasRef.current && canvasContext && imageCanvasRef.current) {
-      canvasRef.current.height = imageCanvasRef.current.height;
-      canvasRef.current.width = imageCanvasRef.current.width;
-      canvasContext.drawImage(imageCanvasRef.current, 0, 0);
+    if (canvasRef.current && canvasContext && imageCanvas) {
+      canvasRef.current.height = imageCanvas.height;
+      canvasRef.current.width = imageCanvas.width;
+      canvasContext.drawImage(imageCanvas, 0, 0);
     }
-  }, [imageCanvasRef]);
+  }, [imageCanvas]);
 
   return <canvas ref={canvasRef} />;
 };
