@@ -3,18 +3,18 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import ImagePicker from './components/ImagePicker';
 import NavigationBar from './components/NavigationBar';
 import { ImageContext } from './context/image/ImageContext';
 import { Routes } from './routes';
 import DefaultView from './views/DefaultView';
 import InvertView from './views/InvertView';
 import IntensityView from './views/IntensityView';
+import SelectImageView from './views/SelectImageView';
 
 const canvasHeight = 200;
 
 const AppContainer: React.FC = () => {
-  const { imagePath, setImagePath, setImageCanvas } = useContext(ImageContext);
+  const { imagePath, setImageCanvas } = useContext(ImageContext);
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -43,30 +43,34 @@ const AppContainer: React.FC = () => {
 
   return (
     <HashRouter>
-      <NavigationBar />
-      <Container>
-        <ImagePicker onChange={setImagePath} />
+      {imagePath ? (
+        <>
+          <NavigationBar />
+          <Container>
+            {imagePath && (
+              <ImagePreviewContainer>
+                <Image
+                  ref={imageRef}
+                  src={imagePath}
+                  height={canvasHeight}
+                  onLoad={onImageLoad}
+                />
+                <Canvas ref={canvasRef} />
+              </ImagePreviewContainer>
+            )}
 
-        {imagePath && (
-          <ImagePreviewContainer>
-            <Image
-              ref={imageRef}
-              src={imagePath}
-              height={canvasHeight}
-              onLoad={onImageLoad}
-            />
-            <Canvas ref={canvasRef} />
-          </ImagePreviewContainer>
-        )}
-
-        <ImagePreviewContainer>
-          <Switch>
-            <Route path={Routes.INVERT.path} component={InvertView} />
-            <Route path={Routes.INTENSITY.path} component={IntensityView} />
-            <Route path={Routes.DEFAULT.path} component={DefaultView} />
-          </Switch>
-        </ImagePreviewContainer>
-      </Container>
+            <ImagePreviewContainer>
+              <Switch>
+                <Route path={Routes.INVERT.path} component={InvertView} />
+                <Route path={Routes.INTENSITY.path} component={IntensityView} />
+                <Route path={Routes.DEFAULT.path} component={DefaultView} />
+              </Switch>
+            </ImagePreviewContainer>
+          </Container>
+        </>
+      ) : (
+        <SelectImageView />
+      )}
     </HashRouter>
   );
 };
