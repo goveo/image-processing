@@ -11,16 +11,17 @@ import styled from 'styled-components';
 import { ImageContext } from '../context/image/ImageContext';
 
 type ColorComponent = 'red' | 'green' | 'blue';
+const maxIntensity = 255;
 
-const IncreaseIntensityWindow: React.FC = () => {
+const IntensityView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [colorComponent, setColorComponent] = useState<ColorComponent>('red');
-  const [intensity, setIntensity] = useState<number>(128);
+  const [intensity, setIntensity] = useState<number>(maxIntensity);
 
   const { imageCanvas } = useContext(ImageContext);
 
   const increaseComponentIntensity = useCallback(
-    (component: ColorComponent, value = 128) => {
+    (component: ColorComponent, value = maxIntensity) => {
       const canvasContext = canvasRef.current?.getContext('2d');
       const imageCanvasContext = imageCanvas?.getContext('2d');
       if (
@@ -79,6 +80,7 @@ const IncreaseIntensityWindow: React.FC = () => {
 
   return (
     <div>
+      <canvas ref={canvasRef} />
       <Block>
         <StepLabel>Color Component</StepLabel>
         <Select
@@ -96,11 +98,12 @@ const IncreaseIntensityWindow: React.FC = () => {
       <Block>
         <StepLabel>Color Intensity</StepLabel>
         <Slider
-          defaultValue={30}
+          defaultValue={maxIntensity / 2}
+          min={0}
+          max={maxIntensity}
           onChange={(event, value) => setIntensity(value as number)}
         />
       </Block>
-      <canvas ref={canvasRef} />
     </div>
   );
 };
@@ -109,4 +112,4 @@ const Block = styled.div`
   margin: 20px 0;
 `;
 
-export default IncreaseIntensityWindow;
+export default IntensityView;

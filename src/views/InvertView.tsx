@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { ImageContext } from '../context/image/ImageContext';
 
-const InvertWindow: React.FC = () => {
+const InvertView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { imageCanvas } = useContext(ImageContext);
@@ -47,4 +47,4 @@ const InvertWindow: React.FC = () => {
   return <canvas ref={canvasRef} />;
 };
 
-export default InvertWindow;
+export default InvertView;

@@ -1,6 +1,6 @@
-import DefaultWindow from './windows/Default.window';
-import IncreaseIntensityWindow from './windows/IncreaseIntensity.window';
-import InvertWindow from './windows/Invert.window';
+import DefaultView from './views/DefaultView';
+import IncreaseIntensityView from './views/IntensityView';
+import InvertView from './views/InvertView';
 
 export interface Route {
   path: string;
@@ -20,15 +20,15 @@ type RoutesDictionary = {
 const Routes: RoutesDictionary = {
   [RouteName.DEFAULT]: {
     path: '/',
-    component: DefaultWindow,
+    component: DefaultView,
   },
   [RouteName.INVERT]: {
     path: '/invert',
-    component: InvertWindow,
+    component: InvertView,
   },
   [RouteName.INTENSITY]: {
     path: '/intensity',
-    component: IncreaseIntensityWindow,
+    component: IncreaseIntensityView,
   },
 };
 

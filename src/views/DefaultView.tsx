@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 
 import { ImageContext } from '../context/image/ImageContext';
 
-const DefaultWindow: React.FC = () => {
+const DefaultView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { imageCanvas } = useContext(ImageContext);
@@ -19,4 +19,4 @@ const DefaultWindow: React.FC = () => {
   return <canvas ref={canvasRef} />;
 };
 
-export default DefaultWindow;
+export default DefaultView;

@@ -7,9 +7,9 @@ import ImagePicker from './components/ImagePicker';
 import NavigationBar from './components/NavigationBar';
 import { ImageContext } from './context/image/ImageContext';
 import { Routes } from './routes';
-import InvertWindow from './windows/Invert.window';
-import MainWindow from './windows/Default.window';
-import IncreaseIntensityWindow from './windows/IncreaseIntensity.window';
+import DefaultView from './views/DefaultView';
+import InvertView from './views/InvertView';
+import IntensityView from './views/IntensityView';
 
 const canvasHeight = 200;
 
@@ -61,12 +61,9 @@ const AppContainer: React.FC = () => {
 
         <ImagePreviewContainer>
           <Switch>
-            <Route path={Routes.INVERT.path} render={() => <InvertWindow />} />
-            <Route
-              path={Routes.INTENSITY.path}
-              render={() => <IncreaseIntensityWindow />}
-            />
-            <Route path={Routes.DEFAULT.path} render={() => <MainWindow />} />
+            <Route path={Routes.INVERT.path} component={InvertView} />
+            <Route path={Routes.INTENSITY.path} component={IntensityView} />
+            <Route path={Routes.DEFAULT.path} component={DefaultView} />
           </Switch>
         </ImagePreviewContainer>
       </Container>
