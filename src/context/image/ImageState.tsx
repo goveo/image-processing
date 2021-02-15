@@ -3,10 +3,10 @@ import React, { useCallback, useMemo, useReducer } from 'react';
 import { ImageContext, initialState } from './ImageContext';
 import imageReducer from './ImageReducer';
 import {
-  ImageStateType,
   ImagePath,
-  SET_IMAGE_PATH,
+  ImageStateType,
   SET_IMAGE_CANVAS,
+  SET_IMAGE_PATH,
 } from './types';
 
 const ImageState: React.FC = ({ children }) => {

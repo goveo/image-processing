@@ -9,8 +9,8 @@ import { ImageContext } from './context/image/ImageContext';
 import { MenuActions } from './enums';
 import { Routes } from './routes';
 import DefaultView from './views/DefaultView';
-import InvertView from './views/InvertView';
 import IntensityView from './views/IntensityView';
+import InvertView from './views/InvertView';
 import SelectImageView from './views/SelectImageView';
 
 const canvasHeight = 200;

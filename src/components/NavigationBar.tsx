@@ -1,6 +1,7 @@
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import { Route, Routes } from '../routes';
 
 const NavigationBar: React.FC = () => {

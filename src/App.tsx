@@ -1,6 +1,6 @@
-import React from 'react';
-
 import '@fontsource/roboto';
+
+import React from 'react';
 
 import AppContainer from './AppContainer';
 import { ImageState } from './context/image/ImageState';

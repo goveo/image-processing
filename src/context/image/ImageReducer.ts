@@ -1,8 +1,8 @@
 import {
-  ImageStateType,
   ImageAction,
-  SET_IMAGE_PATH,
+  ImageStateType,
   SET_IMAGE_CANVAS,
+  SET_IMAGE_PATH,
 } from './types';
 
 export default (state: ImageStateType, action: ImageAction): ImageStateType => {
