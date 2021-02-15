@@ -1,10 +1,8 @@
-/* eslint-disable no-undef */
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const path = require('path');
-const isDev = require('electron-is-dev');
-let mainWindow;
+import { app, BrowserWindow } from 'electron';
+import isDev from 'electron-is-dev';
+import path from 'path';
+
+let mainWindow: BrowserWindow | null;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -19,7 +17,7 @@ const createWindow = () => {
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`,
+      : `file://${path.join(__dirname, 'renderer/index.html')}`,
   );
   mainWindow.on('closed', () => (mainWindow = null));
 };
