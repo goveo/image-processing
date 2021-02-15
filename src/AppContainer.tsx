@@ -3,8 +3,10 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
+import ImagePicker from './components/ImagePicker';
 import NavigationBar from './components/NavigationBar';
 import { ImageContext } from './context/image/ImageContext';
+import { MenuActions } from './enums';
 import { Routes } from './routes';
 import DefaultView from './views/DefaultView';
 import InvertView from './views/InvertView';
@@ -14,9 +16,10 @@ import SelectImageView from './views/SelectImageView';
 const canvasHeight = 200;
 
 const AppContainer: React.FC = () => {
-  const { imagePath, setImageCanvas } = useContext(ImageContext);
+  const { imagePath, setImageCanvas, setImagePath } = useContext(ImageContext);
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setImageCanvas(canvasRef.current);
@@ -41,8 +44,16 @@ const AppContainer: React.FC = () => {
     setImageCanvas(canvasRef.current);
   }, [renderImageToCanvas, setImageCanvas]);
 
+  useEffect(() => {
+    window.require('electron').ipcRenderer.on(MenuActions.OpenFile, () => {
+      inputRef.current?.click();
+    });
+  }, []);
+
   return (
     <HashRouter>
+      <ImagePicker ref={inputRef} onChange={setImagePath} />
+
       {imagePath ? (
         <>
           <NavigationBar />
