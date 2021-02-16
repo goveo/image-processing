@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { ImageContext } from '../context/image/ImageContext';
+import getPixelsFromCanvas from '../utils/getPixelsFromCanvas';
 
 const InvertView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -8,33 +9,18 @@ const InvertView: React.FC = () => {
   const { imageCanvas } = useContext(ImageContext);
 
   const invertImage = useCallback(() => {
-    const canvasContext = canvasRef.current?.getContext('2d');
-    const imageCanvasContext = imageCanvas?.getContext('2d');
-    if (
-      canvasContext &&
-      canvasRef.current &&
-      imageCanvasContext &&
-      imageCanvas
-    ) {
-      const imageData = imageCanvasContext.getImageData(
-        0,
-        0,
-        imageCanvas.width,
-        imageCanvas.height,
-      );
-
-      for (let y = 0; y < imageData.height; y++) {
-        for (let x = 0; x < imageData.width; x++) {
-          const i = x * 4 + y * imageData.width * 4;
-          imageData.data[i] = imageData.data[i] ^ 255; // Red
-          imageData.data[i + 1] = imageData.data[i + 1] ^ 255; // Green
-          imageData.data[i + 2] = imageData.data[i + 2] ^ 255; // Blue
-        }
-      }
-
-      canvasRef.current.height = imageCanvas.height;
-      canvasRef.current.width = imageCanvas.width;
-      canvasContext.putImageData(imageData, 0, 0);
+    if (!imageCanvas || !canvasRef.current) return;
+    const canvasPixelIterator = getPixelsFromCanvas(
+      imageCanvas,
+      canvasRef.current,
+    );
+    let pixelData = canvasPixelIterator.next();
+    while (!pixelData.done) {
+      const { red, green, blue, setRed, setBlue, setGreen } = pixelData.value;
+      setRed(red ^ 255);
+      setGreen(green ^ 255);
+      setBlue(blue ^ 255);
+      pixelData = canvasPixelIterator.next();
     }
   }, [imageCanvas]);
 

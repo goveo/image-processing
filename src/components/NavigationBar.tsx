@@ -27,6 +27,10 @@ const NavigationBar: React.FC = () => {
       <BottomNavigationAction value={Routes.DEFAULT} label="Default" />
       <BottomNavigationAction value={Routes.INVERT} label="Invert" />
       <BottomNavigationAction value={Routes.INTENSITY} label="Intensity" />
+      <BottomNavigationAction
+        value={Routes.COLOR_COMPONENTS}
+        label="Color components"
+      />
     </BottomNavigation>
   );
 };

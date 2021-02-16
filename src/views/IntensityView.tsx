@@ -9,8 +9,8 @@ import React, {
 import styled from 'styled-components';
 
 import { ImageContext } from '../context/image/ImageContext';
+import { ColorComponent } from '../types';
 
-type ColorComponent = 'red' | 'green' | 'blue';
 const maxIntensity = 255;
 
 const IntensityView: React.FC = () => {

@@ -9,11 +9,11 @@ const DefaultView: React.FC = () => {
 
   useEffect(() => {
     const canvasContext = canvasRef.current?.getContext('2d');
-    if (canvasRef.current && canvasContext && imageCanvas) {
-      canvasRef.current.height = imageCanvas.height;
-      canvasRef.current.width = imageCanvas.width;
-      canvasContext.drawImage(imageCanvas, 0, 0);
-    }
+    if (!canvasRef.current || !canvasContext || !imageCanvas) return;
+
+    canvasRef.current.height = imageCanvas.height;
+    canvasRef.current.width = imageCanvas.width;
+    canvasContext.drawImage(imageCanvas, 0, 0);
   }, [imageCanvas]);
 
   return <canvas ref={canvasRef} />;

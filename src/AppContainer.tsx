@@ -8,9 +8,6 @@ import NavigationBar from './components/NavigationBar';
 import { ImageContext } from './context/image/ImageContext';
 import { MenuActions } from './enums';
 import { Routes } from './routes';
-import DefaultView from './views/DefaultView';
-import IntensityView from './views/IntensityView';
-import InvertView from './views/InvertView';
 import SelectImageView from './views/SelectImageView';
 
 const canvasHeight = 200;
@@ -72,9 +69,9 @@ const AppContainer: React.FC = () => {
 
             <ImagePreviewContainer>
               <Switch>
-                <Route path={Routes.INVERT.path} component={InvertView} />
-                <Route path={Routes.INTENSITY.path} component={IntensityView} />
-                <Route path={Routes.DEFAULT.path} component={DefaultView} />
+                {Object.values(Routes).map(({ path, component: Component }) => (
+                  <Route key={path} path={path} render={() => <Component />} />
+                ))}
               </Switch>
             </ImagePreviewContainer>
           </Container>
