@@ -17,8 +17,9 @@
     "build:run": "concurrently \"yarn build\" \"yarn start:electron\"",
     "build:electron": "webpack --config webpack/electron.webpack.js",
     "build:react": "webpack --config webpack/react.webpack.js",
-    "lint": "eslint --ext .ts,.tsx src/",
+    "lint:ts": "eslint --ext .ts,.tsx src/",
     "lint:css": "stylelint ./src/**/*.tsx",
+    "lint": "yarn lint:ts && yarn lint:css",
     "prettier": "prettier --write \"./src/**/*.{ts,tsx}\""
   },
   "dependencies": {
