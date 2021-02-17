@@ -2,10 +2,12 @@ import ColorComponentsView from './views/ColorComponentsView';
 import DefaultView from './views/DefaultView';
 import IncreaseIntensityView from './views/IntensityView';
 import InvertView from './views/InvertView';
+import MergeView from './views/MergeView';
 
 export interface Route {
   path: string;
   component: React.FC;
+  title: string;
 }
 
 export enum RouteName {
@@ -13,6 +15,7 @@ export enum RouteName {
   INVERT = 'INVERT',
   INTENSITY = 'INTENSITY',
   COLOR_COMPONENTS = 'COLOR_COMPONENTS',
+  MERGE = 'MERGE',
 }
 
 type RoutesDictionary = {
@@ -20,21 +23,30 @@ type RoutesDictionary = {
 };
 
 const Routes: RoutesDictionary = {
+  [RouteName.DEFAULT]: {
+    path: '/',
+    component: DefaultView,
+    title: 'Default',
+  },
   [RouteName.INVERT]: {
     path: '/invert',
     component: InvertView,
+    title: 'Invert',
   },
   [RouteName.INTENSITY]: {
     path: '/intensity',
     component: IncreaseIntensityView,
+    title: 'Intensity',
   },
   [RouteName.COLOR_COMPONENTS]: {
     path: '/color-components',
     component: ColorComponentsView,
+    title: 'Color components',
   },
-  [RouteName.DEFAULT]: {
-    path: '/',
-    component: DefaultView,
+  [RouteName.MERGE]: {
+    path: '/merge',
+    component: MergeView,
+    title: 'Merge',
   },
 };
 

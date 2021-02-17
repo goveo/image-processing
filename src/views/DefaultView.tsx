@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { ImageContext } from '../context/image/ImageContext';
+import copyCanvasData from '../utils/copyCanvasData';
 
 const DefaultView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -8,12 +9,9 @@ const DefaultView: React.FC = () => {
   const { imageCanvas } = useContext(ImageContext);
 
   useEffect(() => {
-    const canvasContext = canvasRef.current?.getContext('2d');
-    if (!canvasRef.current || !canvasContext || !imageCanvas) return;
+    if (!imageCanvas || !canvasRef.current) return;
 
-    canvasRef.current.height = imageCanvas.height;
-    canvasRef.current.width = imageCanvas.width;
-    canvasContext.drawImage(imageCanvas, 0, 0);
+    copyCanvasData(imageCanvas, canvasRef.current);
   }, [imageCanvas]);
 
   return <canvas ref={canvasRef} />;

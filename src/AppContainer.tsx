@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import MaterialContainer from '@material-ui/core/Container';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import NavigationBar from './components/NavigationBar';
 import { ImageContext } from './context/image/ImageContext';
 import { MenuActions } from './enums';
 import { Routes } from './routes';
+import renderImageToCanvas from './utils/renderImageToCanvas';
 import SelectImageView from './views/SelectImageView';
 
 const canvasHeight = 200;
@@ -22,24 +23,11 @@ const AppContainer: React.FC = () => {
     setImageCanvas(canvasRef.current);
   }, [canvasRef, setImageCanvas]);
 
-  const renderImageToCanvas = useCallback((): void => {
-    const canvas = canvasRef.current;
-    const image = imageRef.current;
-    const canvasContext = canvas?.getContext('2d');
-    if (canvasContext && image && canvas) {
-      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-      const canvasMultiplier = canvasHeight / image.height;
-      const canvasWidth = image.width * canvasMultiplier;
-      canvas.height = canvasHeight;
-      canvas.width = canvasWidth;
-      canvasContext.drawImage(image, 0, 0, image.width, image.height);
-    }
-  }, []);
-
   const onImageLoad = useCallback(() => {
-    renderImageToCanvas();
+    if (!imageRef.current || !canvasRef.current) return;
+    renderImageToCanvas(imageRef.current, canvasRef.current);
     setImageCanvas(canvasRef.current);
-  }, [renderImageToCanvas, setImageCanvas]);
+  }, [setImageCanvas]);
 
   useEffect(() => {
     window.require('electron').ipcRenderer.on(MenuActions.OpenFile, () => {
@@ -48,40 +36,52 @@ const AppContainer: React.FC = () => {
   }, []);
 
   return (
-    <HashRouter>
-      <ImagePicker ref={inputRef} onChange={setImagePath} />
+    <Container>
+      <HashRouter>
+        <ImagePicker ref={inputRef} onChange={setImagePath} />
 
-      {imagePath ? (
-        <>
-          <NavigationBar />
-          <Container>
-            {imagePath && (
+        {imagePath ? (
+          <>
+            <NavigationBar />
+            <MaterialContainer>
+              {imagePath && (
+                <ImagePreviewContainer>
+                  <Image
+                    ref={imageRef}
+                    src={imagePath}
+                    height={canvasHeight}
+                    onLoad={onImageLoad}
+                  />
+                  <Canvas ref={canvasRef} />
+                </ImagePreviewContainer>
+              )}
+
               <ImagePreviewContainer>
-                <Image
-                  ref={imageRef}
-                  src={imagePath}
-                  height={canvasHeight}
-                  onLoad={onImageLoad}
-                />
-                <Canvas ref={canvasRef} />
+                <Switch>
+                  {Object.values(Routes)
+                    .map(({ path, component: Component }) => (
+                      <Route
+                        key={path}
+                        path={path}
+                        render={() => <Component />}
+                      />
+                    ))
+                    .reverse()}
+                </Switch>
               </ImagePreviewContainer>
-            )}
-
-            <ImagePreviewContainer>
-              <Switch>
-                {Object.values(Routes).map(({ path, component: Component }) => (
-                  <Route key={path} path={path} render={() => <Component />} />
-                ))}
-              </Switch>
-            </ImagePreviewContainer>
-          </Container>
-        </>
-      ) : (
-        <SelectImageView />
-      )}
-    </HashRouter>
+            </MaterialContainer>
+          </>
+        ) : (
+          <SelectImageView />
+        )}
+      </HashRouter>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  overflow: hidden;
+`;
 
 const ImagePreviewContainer = styled.div`
   display: flex;

@@ -24,13 +24,13 @@ const NavigationBar: React.FC = () => {
       }}
       showLabels
     >
-      <BottomNavigationAction value={Routes.DEFAULT} label="Default" />
-      <BottomNavigationAction value={Routes.INVERT} label="Invert" />
-      <BottomNavigationAction value={Routes.INTENSITY} label="Intensity" />
-      <BottomNavigationAction
-        value={Routes.COLOR_COMPONENTS}
-        label="Color components"
-      />
+      {Object.values(Routes).map((route) => (
+        <BottomNavigationAction
+          key={route.path}
+          value={route}
+          label={route.title}
+        />
+      ))}
     </BottomNavigation>
   );
 };
