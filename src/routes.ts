@@ -1,5 +1,6 @@
 import ColorComponentsView from './views/ColorComponentsView';
 import DefaultView from './views/DefaultView';
+import FiltersView from './views/FiltersView';
 import IncreaseIntensityView from './views/IntensityView';
 import InvertView from './views/InvertView';
 import MergeView from './views/MergeView';
@@ -16,6 +17,7 @@ export enum RouteName {
   INTENSITY = 'INTENSITY',
   COLOR_COMPONENTS = 'COLOR_COMPONENTS',
   MERGE = 'MERGE',
+  FILTERS = 'FILTERS',
 }
 
 type RoutesDictionary = {
@@ -47,6 +49,11 @@ const Routes: RoutesDictionary = {
     path: '/merge',
     component: MergeView,
     title: 'Merge',
+  },
+  [RouteName.FILTERS]: {
+    path: '/filters',
+    component: FiltersView,
+    title: 'Filters',
   },
 };
 

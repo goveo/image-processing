@@ -1,3 +1,5 @@
+import getPixelIndexes from './getPixelIndexes';
+
 interface PixelData {
   red: number;
   green: number;
@@ -11,17 +13,6 @@ interface PixelDataSetters {
   setGreen: (value: number) => void;
   setAlpha: (value: number) => void;
 }
-
-const getPixelIndexes = (x: number, y: number, imageWidth: number) => {
-  const i = x * 4 + y * imageWidth * 4;
-
-  return {
-    red: i,
-    green: i + 1,
-    blue: i + 2,
-    alpha: i + 3,
-  };
-};
 
 function* getPixelsFromCanvas(
   fromCanvas: HTMLCanvasElement,

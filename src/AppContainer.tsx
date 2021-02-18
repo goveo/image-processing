@@ -95,8 +95,7 @@ const Image = styled.img`
 `;
 
 const Canvas = styled.canvas`
-  position: absolute;
-  visibility: hidden;
+  display: none;
 `;
 
 export default AppContainer;
