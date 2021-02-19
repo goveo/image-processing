@@ -11,7 +11,7 @@ import { Routes } from './routes';
 import renderImageToCanvas from './utils/renderImageToCanvas';
 import SelectImageView from './views/SelectImageView';
 
-const canvasHeight = 200;
+const canvasHeight = 300;
 
 const AppContainer: React.FC = () => {
   const { imagePath, setImageCanvas, setImagePath } = useContext(ImageContext);

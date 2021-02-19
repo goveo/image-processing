@@ -47,11 +47,7 @@ const SobelFilter = (imageData: ImageData): ImageData => {
     }
   }
 
-  return new ImageData(
-    new Uint8ClampedArray(filterData),
-    width,
-    height,
-  );
+  return new ImageData(new Uint8ClampedArray(filterData), width, height);
 };
 
 export default SobelFilter;

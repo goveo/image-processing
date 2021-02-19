@@ -1,20 +1,17 @@
+import { PixelData, PixelOffsets } from '../types';
+
 const getPixelIndexes = (
   x: number,
   y: number,
   imageWidth: number,
-): {
-  red: number;
-  green: number;
-  blue: number;
-  alpha: number;
-} => {
+): PixelData => {
   const i = x * 4 + y * imageWidth * 4;
 
   return {
-    red: i,
-    green: i + 1,
-    blue: i + 2,
-    alpha: i + 3,
+    red: i + PixelOffsets.red,
+    green: i + PixelOffsets.green,
+    blue: i + PixelOffsets.blue,
+    alpha: i + PixelOffsets.alpha,
   };
 };
 

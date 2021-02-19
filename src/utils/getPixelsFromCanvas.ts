@@ -1,11 +1,5 @@
+import { PixelData } from '../types';
 import getPixelIndexes from './getPixelIndexes';
-
-interface PixelData {
-  red: number;
-  green: number;
-  blue: number;
-  alpha: number;
-}
 
 interface PixelDataSetters {
   setRed: (value: number) => void;

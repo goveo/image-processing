@@ -1,3 +1,7 @@
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Slider from '@material-ui/core/Slider';
+import StepLabel from '@material-ui/core/StepLabel';
 import React, {
   useCallback,
   useContext,
@@ -8,11 +12,13 @@ import React, {
 
 import { ImageContext } from '../context/image/ImageContext';
 import { Filter } from '../types';
+import MedianFilter from '../utils/filters/median';
 import SobelFilter from '../utils/filters/sobel';
 
 const FiltersView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [currentFilter, setCurrentFilter] = useState<Filter>('sobel');
+  const [medianMatrixSize, setMedianMatrixSize] = useState<number>(1);
 
   const { imageCanvas } = useContext(ImageContext);
 
@@ -41,11 +47,14 @@ const FiltersView: React.FC = () => {
         case 'sobel':
           filteredData = SobelFilter(imageData);
           break;
+        case 'median':
+          filteredData = MedianFilter(imageData, medianMatrixSize);
+          break;
       }
 
       canvasContext.putImageData(filteredData, 0, 0);
     },
-    [imageCanvas],
+    [imageCanvas, medianMatrixSize],
   );
 
   useEffect(() => {
@@ -54,7 +63,35 @@ const FiltersView: React.FC = () => {
     }
   }, [applyFilter, currentFilter, imageCanvas, imageCanvas?.outerHTML]);
 
-  return <canvas ref={canvasRef} />;
+  return (
+    <div>
+      <canvas ref={canvasRef} />
+      <StepLabel>Filter</StepLabel>
+      <Select
+        value={currentFilter}
+        onChange={(event) => setCurrentFilter(event.target.value as Filter)}
+        fullWidth
+      >
+        <MenuItem value={'sobel'}>Sobel</MenuItem>
+        <MenuItem value={'median'}>Median</MenuItem>
+      </Select>
+
+      {currentFilter === 'median' && (
+        <>
+          <StepLabel>Median matrix value</StepLabel>
+          <Slider
+            value={medianMatrixSize}
+            valueLabelDisplay="auto"
+            marks
+            min={1}
+            max={4}
+            step={1}
+            onChange={(event, value) => setMedianMatrixSize(value as number)}
+          />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default FiltersView;
