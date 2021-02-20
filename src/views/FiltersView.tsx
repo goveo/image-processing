@@ -12,6 +12,7 @@ import React, {
 
 import { ImageContext } from '../context/image/ImageContext';
 import { Filter } from '../types';
+import BlurFilter from '../utils/filters/blur';
 import MedianFilter from '../utils/filters/median';
 import SharpenFilter from '../utils/filters/sharpen';
 import SobelFilter from '../utils/filters/sobel';
@@ -54,6 +55,9 @@ const FiltersView: React.FC = () => {
         case 'sharpen':
           filteredData = SharpenFilter(imageData);
           break;
+        case 'blur':
+          filteredData = BlurFilter(imageData);
+          break;
       }
 
       canvasContext.putImageData(filteredData, 0, 0);
@@ -79,6 +83,7 @@ const FiltersView: React.FC = () => {
         <MenuItem value={'sobel'}>Sobel</MenuItem>
         <MenuItem value={'median'}>Median</MenuItem>
         <MenuItem value={'sharpen'}>Sharpen</MenuItem>
+        <MenuItem value={'blur'}>Blur</MenuItem>
       </Select>
 
       {currentFilter === 'median' && (
