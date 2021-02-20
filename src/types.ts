@@ -13,4 +13,4 @@ export interface PixelData {
   alpha: number;
 }
 
-export type Filter = 'sobel' | 'median';
+export type Filter = 'sobel' | 'median' | 'sharpen';

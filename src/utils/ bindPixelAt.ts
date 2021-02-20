@@ -1,12 +1,14 @@
-import { PixelComponent, PixelOffsets } from '../types';
+import { PixelData, PixelOffsets } from '../types';
 
 const bindPixelAt = (data: Uint8ClampedArray, width: number) => {
-  return (
-    x: number,
-    y: number,
-    pixelComponent: PixelComponent = 'red',
-  ): number => {
-    return data[(width * y + x) * 4 + PixelOffsets[pixelComponent]];
+  return (x: number, y: number): PixelData => {
+    const index = (width * y + x) * 4;
+    return {
+      red: data[index + PixelOffsets.red],
+      green: data[index + PixelOffsets.green],
+      blue: data[index + PixelOffsets.blue],
+      alpha: data[index + PixelOffsets.alpha],
+    };
   };
 };
 

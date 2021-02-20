@@ -27,8 +27,7 @@ const MedianFilter = (
         result[index] = pixelAt(
           x + i - medianMatrixSize,
           y + j - medianMatrixSize,
-          pixelComponent,
-        );
+        )[pixelComponent];
       }
     }
     result.sort((a, b) => a - b);

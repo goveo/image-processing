@@ -20,26 +20,26 @@ const SobelFilter = (imageData: ImageData): ImageData => {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const pixelX =
-        kernelX[0][0] * pixelAt(x - 1, y - 1) +
-        kernelX[0][1] * pixelAt(x, y - 1) +
-        kernelX[0][2] * pixelAt(x + 1, y - 1) +
-        kernelX[1][0] * pixelAt(x - 1, y) +
-        kernelX[1][1] * pixelAt(x, y) +
-        kernelX[1][2] * pixelAt(x + 1, y) +
-        kernelX[2][0] * pixelAt(x - 1, y + 1) +
-        kernelX[2][1] * pixelAt(x, y + 1) +
-        kernelX[2][2] * pixelAt(x + 1, y + 1);
+        kernelX[0][0] * pixelAt(x - 1, y - 1).red +
+        kernelX[0][1] * pixelAt(x, y - 1).red +
+        kernelX[0][2] * pixelAt(x + 1, y - 1).red +
+        kernelX[1][0] * pixelAt(x - 1, y).red +
+        kernelX[1][1] * pixelAt(x, y).red +
+        kernelX[1][2] * pixelAt(x + 1, y).red +
+        kernelX[2][0] * pixelAt(x - 1, y + 1).red +
+        kernelX[2][1] * pixelAt(x, y + 1).red +
+        kernelX[2][2] * pixelAt(x + 1, y + 1).red;
 
       const pixelY =
-        kernelY[0][0] * pixelAt(x - 1, y - 1) +
-        kernelY[0][1] * pixelAt(x, y - 1) +
-        kernelY[0][2] * pixelAt(x + 1, y - 1) +
-        kernelY[1][0] * pixelAt(x - 1, y) +
-        kernelY[1][1] * pixelAt(x, y) +
-        kernelY[1][2] * pixelAt(x + 1, y) +
-        kernelY[2][0] * pixelAt(x - 1, y + 1) +
-        kernelY[2][1] * pixelAt(x, y + 1) +
-        kernelY[2][2] * pixelAt(x + 1, y + 1);
+        kernelY[0][0] * pixelAt(x - 1, y - 1).red +
+        kernelY[0][1] * pixelAt(x, y - 1).red +
+        kernelY[0][2] * pixelAt(x + 1, y - 1).red +
+        kernelY[1][0] * pixelAt(x - 1, y).red +
+        kernelY[1][1] * pixelAt(x, y).red +
+        kernelY[1][2] * pixelAt(x + 1, y).red +
+        kernelY[2][0] * pixelAt(x - 1, y + 1).red +
+        kernelY[2][1] * pixelAt(x, y + 1).red +
+        kernelY[2][2] * pixelAt(x + 1, y + 1).red;
 
       const magnitude = Math.sqrt(pixelX ** 2 + pixelY ** 2);
 
