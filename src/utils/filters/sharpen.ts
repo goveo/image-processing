@@ -1,11 +1,9 @@
 import MatrixFilter from './matrixFilter';
 
 const sharpenMatrix = [
-  [0, 0, 0, 0, 0],
-  [0, -1, -1, -1, 0],
-  [0, -1, 9, -1, 0],
-  [0, -1, -1, -1, 0],
-  [0, 0, 0, 0, 0],
+  [-1, -1, -1],
+  [-1, 9, -1],
+  [-1, -1, -1],
 ];
 
 const SharpenFilter = (imageData: ImageData): ImageData =>

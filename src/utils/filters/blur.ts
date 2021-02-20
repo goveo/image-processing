@@ -1,3 +1,4 @@
+import { FilterFunc } from '../../types';
 import MatrixFilter from './matrixFilter';
 
 const blurMatrix = [

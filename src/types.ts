@@ -12,5 +12,18 @@ export interface PixelData {
   blue: number;
   alpha: number;
 }
+export interface Position {
+  x: number;
+  y: number;
+}
 
-export type Filter = 'sobel' | 'median' | 'sharpen' | 'blur';
+export type Filter =
+  | 'sobel'
+  | 'median'
+  | 'sharpen'
+  | 'blur'
+  | 'erosion'
+  | 'dilation';
+
+export type FilterFunc = (imageData: ImageData) => ImageData;
+export type FilterMediatorFunc = (iterationPixels: number[]) => number;
