@@ -15,6 +15,7 @@ import { Filter } from '../types';
 import BlurFilter from '../utils/filters/blur';
 import DilationFilter from '../utils/filters/dilation';
 import ErosionFilter from '../utils/filters/erosion';
+import GrayscaleFilter from '../utils/filters/grayscale';
 import MedianFilter from '../utils/filters/median';
 import SharpenFilter from '../utils/filters/sharpen';
 import SobelFilter from '../utils/filters/sobel';
@@ -66,6 +67,9 @@ const FiltersView: React.FC = () => {
         case 'dilation':
           filteredData = DilationFilter(imageData);
           break;
+        case 'grayscale':
+          filteredData = GrayscaleFilter(imageData);
+          break;
       }
 
       canvasContext.putImageData(filteredData, 0, 0);
@@ -94,6 +98,7 @@ const FiltersView: React.FC = () => {
         <MenuItem value={'blur'}>Blur</MenuItem>
         <MenuItem value={'erosion'}>Erosion</MenuItem>
         <MenuItem value={'dilation'}>Dilation</MenuItem>
+        <MenuItem value={'grayscale'}>Grayscale</MenuItem>
       </Select>
 
       {currentFilter === 'median' && (

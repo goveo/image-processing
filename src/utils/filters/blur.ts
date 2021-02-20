@@ -9,7 +9,9 @@ const blurMatrix = [
   [0.000789, 0.006581, 0.013347, 0.006581, 0.000789],
 ];
 
-const BlurFilter = (imageData: ImageData): ImageData =>
-  MatrixFilter(imageData, blurMatrix);
+const BlurFilter: FilterFunc = (imageData: ImageData): ImageData =>
+  MatrixFilter(imageData, {
+    matrix: blurMatrix,
+  });
 
 export default BlurFilter;

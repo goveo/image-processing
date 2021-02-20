@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, globalShortcut, Menu } from 'electron';
 import isDev from 'electron-is-dev';
 import path from 'path';
 
@@ -24,6 +24,12 @@ const createWindow = () => {
       : `file://${path.join(__dirname, 'renderer/index.html')}`,
   );
   mainWindow.on('closed', () => (mainWindow = null));
+
+  if (isDev) {
+    globalShortcut.register('CommandOrControl+R', () => {
+      mainWindow.reload();
+    });
+  }
 };
 
 const setMainMenu = () => {

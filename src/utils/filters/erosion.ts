@@ -1,3 +1,4 @@
+import { FilterFunc, PixelComponent } from '../../types';
 import MatrixFilter from './matrixFilter';
 
 const e = NaN; // empty value
@@ -8,9 +9,25 @@ const erosionMatrix = [
   [e, 1, e],
 ];
 
-const ErosionFilter = (imageData: ImageData): ImageData =>
-  MatrixFilter(imageData, erosionMatrix, 1, (iterationPixels) => {
-    return Math.min(...iterationPixels.filter((value) => !isNaN(value)));
+const ErosionFilter: FilterFunc = (imageData: ImageData): ImageData =>
+  MatrixFilter(imageData, {
+    matrix: erosionMatrix,
+    mediator: (iterationPixels) => {
+      const getPixelValue = (pixelComponent: PixelComponent) => {
+        return Math.min(
+          ...iterationPixels
+            .map((pixel) => pixel[pixelComponent])
+            .filter((value) => !isNaN(value)),
+        );
+      };
+
+      return {
+        red: getPixelValue('red'),
+        green: getPixelValue('green'),
+        blue: getPixelValue('blue'),
+        alpha: getPixelValue('alpha'),
+      };
+    },
   });
 
 export default ErosionFilter;

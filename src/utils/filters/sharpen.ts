@@ -7,6 +7,8 @@ const sharpenMatrix = [
 ];
 
 const SharpenFilter = (imageData: ImageData): ImageData =>
-  MatrixFilter(imageData, sharpenMatrix);
+  MatrixFilter(imageData, {
+    matrix: sharpenMatrix,
+  });
 
 export default SharpenFilter;

@@ -1,3 +1,4 @@
+import { FilterFunc, PixelComponent } from '../../types';
 import MatrixFilter from './matrixFilter';
 
 const e = NaN; // empty value
@@ -10,9 +11,25 @@ const dilationMatrix = [
   [e, e, 1, e, e],
 ];
 
-const DilationFilter = (imageData: ImageData): ImageData =>
-  MatrixFilter(imageData, dilationMatrix, 1, (iterationPixels) => {
-    return Math.max(...iterationPixels.filter((value) => !isNaN(value)));
+const DilationFilter: FilterFunc = (imageData: ImageData): ImageData =>
+  MatrixFilter(imageData, {
+    matrix: dilationMatrix,
+    mediator: (iterationPixels) => {
+      const getPixelValue = (pixelComponent: PixelComponent) => {
+        return Math.max(
+          ...iterationPixels
+            .map((pixel) => pixel[pixelComponent])
+            .filter((value) => !isNaN(value)),
+        );
+      };
+
+      return {
+        red: getPixelValue('red'),
+        green: getPixelValue('green'),
+        blue: getPixelValue('blue'),
+        alpha: getPixelValue('alpha'),
+      };
+    },
   });
 
 export default DilationFilter;

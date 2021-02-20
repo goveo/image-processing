@@ -23,7 +23,20 @@ export type Filter =
   | 'sharpen'
   | 'blur'
   | 'erosion'
-  | 'dilation';
+  | 'dilation'
+  | 'grayscale';
 
-export type FilterFunc = (imageData: ImageData) => ImageData;
-export type FilterMediatorFunc = (iterationPixels: number[]) => number;
+export type FilterFunc = (
+  imageData: ImageData,
+  filterOptions?: Partial<FilterOptions>,
+) => ImageData;
+export type FilterMediatorFunc = (
+  iterationPixels: PixelData[],
+  currentPixel: PixelData,
+) => PixelData;
+
+export interface FilterOptions {
+  matrix: number[][];
+  div: number;
+  mediator: FilterMediatorFunc;
+}
