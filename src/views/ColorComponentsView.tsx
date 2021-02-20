@@ -9,7 +9,9 @@ import styled from 'styled-components';
 
 import { ImageContext } from '../context/image/ImageContext';
 import { ColorComponent } from '../types';
-import getPixelsFromCanvas from '../utils/getPixelsFromCanvas';
+import ColorComponentFilter from '../utils/filters/colorComponent';
+import getImageDataFromCanvas from '../utils/imageData/getImageDataFromCanvas';
+import setImageDataToCanvas from '../utils/imageData/setImageDataToCanvas';
 
 const ColorComponentsView: React.FC = () => {
   const redCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,31 +22,18 @@ const ColorComponentsView: React.FC = () => {
 
   const increaseComponentIntensity = useCallback(
     (canvasRef: RefObject<HTMLCanvasElement>, component: ColorComponent) => {
-      if (!imageCanvas || !canvasRef.current) return;
-
-      const canvasPixelIterator = getPixelsFromCanvas(
-        imageCanvas,
-        canvasRef.current,
-      );
-      let pixelData = canvasPixelIterator.next();
-      while (!pixelData.done) {
-        const { setRed, setBlue, setGreen } = pixelData.value;
-        switch (component) {
-          case 'red':
-            setGreen(0);
-            setBlue(0);
-            break;
-          case 'green':
-            setRed(0);
-            setBlue(0);
-            break;
-          case 'blue':
-            setRed(0);
-            setGreen(0);
-            break;
-        }
-        pixelData = canvasPixelIterator.next();
+      const canvas = canvasRef.current;
+      if (!canvas || !imageCanvas) {
+        throw new Error("Can't get canvas");
       }
+      canvas.width = imageCanvas.width;
+      canvas.height = imageCanvas.height;
+      const imageData = getImageDataFromCanvas(imageCanvas);
+
+      const filteredData = ColorComponentFilter(imageData, {
+        colorComponent: component,
+      });
+      setImageDataToCanvas(canvas, filteredData);
     },
     [imageCanvas],
   );

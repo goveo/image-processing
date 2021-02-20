@@ -1,7 +1,9 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { ImageContext } from '../context/image/ImageContext';
-import getPixelsFromCanvas from '../utils/getPixelsFromCanvas';
+import InvertFilter from '../utils/filters/invert';
+import getImageDataFromCanvas from '../utils/imageData/getImageDataFromCanvas';
+import setImageDataToCanvas from '../utils/imageData/setImageDataToCanvas';
 
 const InvertView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,19 +11,16 @@ const InvertView: React.FC = () => {
   const { imageCanvas } = useContext(ImageContext);
 
   const invertImage = useCallback(() => {
-    if (!imageCanvas || !canvasRef.current) return;
-    const canvasPixelIterator = getPixelsFromCanvas(
-      imageCanvas,
-      canvasRef.current,
-    );
-    let pixelData = canvasPixelIterator.next();
-    while (!pixelData.done) {
-      const { red, green, blue, setRed, setBlue, setGreen } = pixelData.value;
-      setRed(red ^ 255);
-      setGreen(green ^ 255);
-      setBlue(blue ^ 255);
-      pixelData = canvasPixelIterator.next();
+    const canvas = canvasRef.current;
+    if (!canvas || !imageCanvas) {
+      throw new Error("Can't get canvas");
     }
+    canvas.width = imageCanvas.width;
+    canvas.height = imageCanvas.height;
+
+    const imageData = getImageDataFromCanvas(imageCanvas);
+
+    setImageDataToCanvas(canvas, InvertFilter(imageData));
   }, [imageCanvas]);
 
   useEffect(() => {

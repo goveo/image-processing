@@ -1,4 +1,4 @@
-import { FilterFunc, FilterOptions, PixelData } from '../../types';
+import { MatrixFilterFunc, MatrixFilterOptions, PixelData } from '../../types';
 import bindPixelAt from '../bindPixelAt';
 import getPixelIterator from '../getPixelIterator';
 
@@ -11,7 +11,7 @@ const multiplyPixelByValue = (pixel: PixelData, value: number): PixelData => {
   };
 };
 
-const defaultOptions: FilterOptions = {
+const defaultOptions: MatrixFilterOptions = {
   matrix: [[1]],
   div: 1,
   mediator: (iterationPixels) => {
@@ -41,9 +41,9 @@ const defaultOptions: FilterOptions = {
   },
 };
 
-const MatrixFilter: FilterFunc = (
+const MatrixFilter: MatrixFilterFunc = (
   imageData: ImageData,
-  options?: Partial<FilterOptions>,
+  options?: Partial<MatrixFilterOptions>,
 ): ImageData => {
   const matrix = options?.matrix ?? defaultOptions.matrix;
   const div = options?.div ?? defaultOptions.div;

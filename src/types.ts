@@ -26,17 +26,40 @@ export type Filter =
   | 'dilation'
   | 'grayscale';
 
-export type FilterFunc = (
-  imageData: ImageData,
-  filterOptions?: Partial<FilterOptions>,
-) => ImageData;
 export type FilterMediatorFunc = (
   iterationPixels: PixelData[],
   currentPixel: PixelData,
 ) => PixelData;
 
-export interface FilterOptions {
+export interface MatrixFilterOptions {
   matrix: number[][];
   div: number;
   mediator: FilterMediatorFunc;
 }
+
+export interface ColorComponentFilterOptions {
+  colorComponent: ColorComponent;
+}
+
+export type InvertFilterOptions = void;
+
+export interface ColorIntensityFilterOptions {
+  colorComponent: ColorComponent;
+  intensity: number;
+}
+
+export type FilterOptions =
+  | MatrixFilterOptions
+  | ColorComponentFilterOptions
+  | InvertFilterOptions
+  | ColorIntensityFilterOptions;
+
+export type FilterFunc<F extends FilterOptions> = (
+  imageData: ImageData,
+  filterOptions: Partial<F>,
+) => ImageData;
+
+export type MatrixFilterFunc = FilterFunc<MatrixFilterOptions>;
+export type ColorComponentFilterFunc = FilterFunc<ColorComponentFilterOptions>;
+export type InvertFilterFunc = FilterFunc<InvertFilterOptions>;
+export type ColorIntensityFilterFunc = FilterFunc<ColorIntensityFilterOptions>;

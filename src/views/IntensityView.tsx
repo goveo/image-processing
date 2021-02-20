@@ -10,6 +10,9 @@ import styled from 'styled-components';
 
 import { ImageContext } from '../context/image/ImageContext';
 import { ColorComponent } from '../types';
+import ColorIntensityFilter from '../utils/filters/colorIntensity';
+import getImageDataFromCanvas from '../utils/imageData/getImageDataFromCanvas';
+import setImageDataToCanvas from '../utils/imageData/setImageDataToCanvas';
 
 const maxIntensity = 255;
 
@@ -21,47 +24,20 @@ const IntensityView: React.FC = () => {
   const { imageCanvas } = useContext(ImageContext);
 
   const increaseComponentIntensity = useCallback(
-    (component: ColorComponent, value = maxIntensity) => {
-      const canvasContext = canvasRef.current?.getContext('2d');
-      const imageCanvasContext = imageCanvas?.getContext('2d');
-      if (
-        canvasContext &&
-        canvasRef.current &&
-        imageCanvasContext &&
-        imageCanvas
-      ) {
-        const imageData = imageCanvasContext.getImageData(
-          0,
-          0,
-          imageCanvas.width,
-          imageCanvas.height,
-        );
-
-        for (let y = 0; y < imageData.height; y++) {
-          for (let x = 0; x < imageData.width; x++) {
-            const i = x * 4 + y * imageData.width * 4;
-
-            const redIndex = i;
-            const greenIndex = i + 1;
-            const blueIndex = i + 2;
-            switch (component) {
-              case 'red':
-                imageData.data[redIndex] = imageData.data[redIndex] + value;
-                break;
-              case 'green':
-                imageData.data[greenIndex] = imageData.data[greenIndex] + value;
-                break;
-              case 'blue':
-                imageData.data[blueIndex] = imageData.data[blueIndex] + value;
-                break;
-            }
-          }
-        }
-
-        canvasRef.current.height = imageCanvas.height;
-        canvasRef.current.width = imageCanvas.width;
-        canvasContext.putImageData(imageData, 0, 0);
+    (component: ColorComponent, intensity = maxIntensity) => {
+      const canvas = canvasRef.current;
+      if (!canvas || !imageCanvas) {
+        throw new Error("Can't get canvas");
       }
+      canvas.width = imageCanvas.width;
+      canvas.height = imageCanvas.height;
+
+      const imageData = getImageDataFromCanvas(imageCanvas);
+      const filteredData = ColorIntensityFilter(imageData, {
+        colorComponent: component,
+        intensity,
+      });
+      setImageDataToCanvas(canvas, filteredData);
     },
     [imageCanvas],
   );
