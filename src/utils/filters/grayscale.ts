@@ -1,7 +1,7 @@
 import { FilterFunc } from '../../types';
 import MatrixFilter from './matrixFilter';
 
-const GrayscaleFilter: FilterFunc = (imageData: ImageData): ImageData =>
+const GrayscaleFilter: FilterFunc = (imageData) =>
   MatrixFilter(imageData, {
     mediator: (iterationPixels, currentPixel) => {
       const avgColor =

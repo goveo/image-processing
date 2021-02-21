@@ -1,7 +1,7 @@
-import { PixelComponent } from '../../types';
+import { FilterFunc, PixelComponent } from '../../types';
 import MatrixFilter from './matrixFilter';
 
-const MedianFilter = (imageData: ImageData, matrixOffset = 1): ImageData => {
+const MedianFilter: FilterFunc<number> = (imageData, matrixOffset = 1) => {
   if (!Number.isInteger(matrixOffset) || matrixOffset < 1) {
     throw new Error('Wrong median matrix offset');
   }

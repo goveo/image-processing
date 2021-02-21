@@ -1,7 +1,7 @@
-import { InvertFilterFunc } from '../../types';
+import { FilterFunc } from '../../types';
 import getPixelIterator from '../getPixelIterator';
 
-const InvertFilter: InvertFilterFunc = (imageData: ImageData): ImageData => {
+const InvertFilter: FilterFunc = (imageData) => {
   const pixelIterator = getPixelIterator(imageData);
   const filteredData = new Array<number>(imageData.data.length);
 

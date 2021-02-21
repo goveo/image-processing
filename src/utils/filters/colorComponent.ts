@@ -1,10 +1,10 @@
-import { ColorComponentFilterFunc } from '../../types';
+import { ColorComponent, FilterFunc } from '../../types';
 import getPixelIterator from '../getPixelIterator';
 
-const ColorComponentFilter: ColorComponentFilterFunc = (
-  imageData: ImageData,
-  { colorComponent = 'red' },
-): ImageData => {
+const ColorComponentFilter: FilterFunc<ColorComponent> = (
+  imageData,
+  colorComponent,
+) => {
   const pixelIterator = getPixelIterator(imageData);
   const filteredData = new Array<number>(imageData.data.length);
 

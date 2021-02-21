@@ -1,8 +1,8 @@
 import ColorComponentsView from './views/ColorComponentsView';
 import DefaultView from './views/DefaultView';
-import FiltersView from './views/FiltersView';
 import IncreaseIntensityView from './views/IntensityView';
 import InvertView from './views/InvertView';
+import MatrixFiltersView from './views/MatrixFiltersView';
 import MergeView from './views/MergeView';
 
 export interface Route {
@@ -17,7 +17,7 @@ export enum RouteName {
   INTENSITY = 'INTENSITY',
   COLOR_COMPONENTS = 'COLOR_COMPONENTS',
   MERGE = 'MERGE',
-  FILTERS = 'FILTERS',
+  MATRIX_FILTERS = 'MATRIX_FILTERS',
 }
 
 type RoutesDictionary = {
@@ -50,10 +50,10 @@ const Routes: RoutesDictionary = {
     component: MergeView,
     title: 'Merge',
   },
-  [RouteName.FILTERS]: {
-    path: '/filters',
-    component: FiltersView,
-    title: 'Filters',
+  [RouteName.MATRIX_FILTERS]: {
+    path: '/matrix-filters',
+    component: MatrixFiltersView,
+    title: 'Matrix filters',
   },
 };
 

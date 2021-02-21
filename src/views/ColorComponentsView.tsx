@@ -30,9 +30,7 @@ const ColorComponentsView: React.FC = () => {
       canvas.height = imageCanvas.height;
       const imageData = getImageDataFromCanvas(imageCanvas);
 
-      const filteredData = ColorComponentFilter(imageData, {
-        colorComponent: component,
-      });
+      const filteredData = ColorComponentFilter(imageData, component);
       setImageDataToCanvas(canvas, filteredData);
     },
     [imageCanvas],

@@ -1,3 +1,4 @@
+import { FilterFunc } from '../../types';
 import GrayscaleFilter from './grayscale';
 import MatrixFilter from './matrixFilter';
 
@@ -19,7 +20,7 @@ const convolutionMatrix = [
   [1, 1, 1],
 ];
 
-const SobelFilter = (imageData: ImageData): ImageData => {
+const SobelFilter: FilterFunc = (imageData) => {
   const grayscaled = GrayscaleFilter(imageData);
   return MatrixFilter(grayscaled, {
     matrix: convolutionMatrix,

@@ -11,7 +11,7 @@ const dilationMatrix = [
   [e, e, 1, e, e],
 ];
 
-const DilationFilter: FilterFunc = (imageData: ImageData): ImageData =>
+const DilationFilter: FilterFunc = (imageData) =>
   MatrixFilter(imageData, {
     matrix: dilationMatrix,
     mediator: (iterationPixels) => {

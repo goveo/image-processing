@@ -17,49 +17,16 @@ export interface Position {
   y: number;
 }
 
-export type Filter =
-  | 'sobel'
-  | 'median'
-  | 'sharpen'
-  | 'blur'
-  | 'erosion'
-  | 'dilation'
-  | 'grayscale';
-
-export type FilterMediatorFunc = (
-  iterationPixels: PixelData[],
-  currentPixel: PixelData,
-) => PixelData;
-
-export interface MatrixFilterOptions {
-  matrix: number[][];
-  div: number;
-  mediator: FilterMediatorFunc;
+export enum MatrixFilter {
+  Sobel = 'sobel',
+  Median = 'median',
+  Sharpen = 'sharpen',
+  Blur = 'blur',
+  Erosion = 'erosion',
+  Dilation = 'dilation',
 }
 
-export interface ColorComponentFilterOptions {
-  colorComponent: ColorComponent;
-}
-
-export type InvertFilterOptions = void;
-
-export interface ColorIntensityFilterOptions {
-  colorComponent: ColorComponent;
-  intensity: number;
-}
-
-export type FilterOptions =
-  | MatrixFilterOptions
-  | ColorComponentFilterOptions
-  | InvertFilterOptions
-  | ColorIntensityFilterOptions;
-
-export type FilterFunc<F extends FilterOptions> = (
+export type FilterFunc<F extends unknown | void = void> = (
   imageData: ImageData,
-  filterOptions: Partial<F>,
+  filterOptions: F,
 ) => ImageData;
-
-export type MatrixFilterFunc = FilterFunc<MatrixFilterOptions>;
-export type ColorComponentFilterFunc = FilterFunc<ColorComponentFilterOptions>;
-export type InvertFilterFunc = FilterFunc<InvertFilterOptions>;
-export type ColorIntensityFilterFunc = FilterFunc<ColorIntensityFilterOptions>;

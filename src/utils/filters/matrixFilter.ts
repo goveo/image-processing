@@ -1,4 +1,4 @@
-import { MatrixFilterFunc, MatrixFilterOptions, PixelData } from '../../types';
+import { FilterFunc, PixelComponent, PixelData } from '../../types';
 import bindPixelAt from '../bindPixelAt';
 import getPixelIterator from '../getPixelIterator';
 
@@ -11,40 +11,41 @@ const multiplyPixelByValue = (pixel: PixelData, value: number): PixelData => {
   };
 };
 
+type FilterMediatorFunc = (
+  iterationPixels: PixelData[],
+  currentPixel: PixelData,
+) => PixelData;
+
+interface MatrixFilterOptions {
+  matrix: number[][];
+  div: number;
+  mediator: FilterMediatorFunc;
+}
+
 const defaultOptions: MatrixFilterOptions = {
   matrix: [[1]],
   div: 1,
   mediator: (iterationPixels) => {
-    const red = iterationPixels.reduce(
-      (result, pixel) => result + pixel.red,
-      0,
-    );
-    const green = iterationPixels.reduce(
-      (result, pixel) => result + pixel.green,
-      0,
-    );
-    const blue = iterationPixels.reduce(
-      (result, pixel) => result + pixel.blue,
-      0,
-    );
-    const alpha = iterationPixels.reduce(
-      (result, pixel) => result + pixel.alpha,
-      0,
-    );
+    const getPixel = (pixelComponent: PixelComponent) => {
+      return iterationPixels.reduce(
+        (result, pixel) => result + pixel[pixelComponent],
+        0,
+      );
+    };
 
     return {
-      red,
-      green,
-      blue,
-      alpha,
+      red: getPixel('red'),
+      green: getPixel('green'),
+      blue: getPixel('blue'),
+      alpha: getPixel('alpha'),
     };
   },
 };
 
-const MatrixFilter: MatrixFilterFunc = (
-  imageData: ImageData,
-  options?: Partial<MatrixFilterOptions>,
-): ImageData => {
+const MatrixFilter: FilterFunc<Partial<MatrixFilterOptions>> = (
+  imageData,
+  options,
+) => {
   const matrix = options?.matrix ?? defaultOptions.matrix;
   const div = options?.div ?? defaultOptions.div;
   const mediator = options?.mediator ?? defaultOptions.mediator;

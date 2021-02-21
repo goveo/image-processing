@@ -11,24 +11,25 @@ import React, {
 } from 'react';
 
 import { ImageContext } from '../context/image/ImageContext';
-import { Filter } from '../types';
+import { MatrixFilter } from '../types';
 import BlurFilter from '../utils/filters/blur';
 import DilationFilter from '../utils/filters/dilation';
 import ErosionFilter from '../utils/filters/erosion';
-import GrayscaleFilter from '../utils/filters/grayscale';
 import MedianFilter from '../utils/filters/median';
 import SharpenFilter from '../utils/filters/sharpen';
 import SobelFilter from '../utils/filters/sobel';
 
-const FiltersView: React.FC = () => {
+const MatrixFiltersView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [currentFilter, setCurrentFilter] = useState<Filter>('sobel');
+  const [currentFilter, setCurrentFilter] = useState<MatrixFilter>(
+    MatrixFilter.Sobel,
+  );
   const [medianMatrixSize, setMedianMatrixSize] = useState<number>(1);
 
   const { imageCanvas } = useContext(ImageContext);
 
   const applyFilter = useCallback(
-    (filter: Filter) => {
+    (filter: MatrixFilter) => {
       if (!imageCanvas || !canvasRef.current) return;
       canvasRef.current.width = imageCanvas.width;
       canvasRef.current.height = imageCanvas.height;
@@ -49,26 +50,23 @@ const FiltersView: React.FC = () => {
 
       let filteredData: ImageData;
       switch (filter) {
-        case 'sobel':
+        case MatrixFilter.Sobel:
           filteredData = SobelFilter(imageData);
           break;
-        case 'median':
+        case MatrixFilter.Median:
           filteredData = MedianFilter(imageData, medianMatrixSize);
           break;
-        case 'sharpen':
+        case MatrixFilter.Sharpen:
           filteredData = SharpenFilter(imageData);
           break;
-        case 'blur':
+        case MatrixFilter.Blur:
           filteredData = BlurFilter(imageData);
           break;
-        case 'erosion':
+        case MatrixFilter.Erosion:
           filteredData = ErosionFilter(imageData);
           break;
-        case 'dilation':
+        case MatrixFilter.Dilation:
           filteredData = DilationFilter(imageData);
-          break;
-        case 'grayscale':
-          filteredData = GrayscaleFilter(imageData);
           break;
       }
 
@@ -89,16 +87,17 @@ const FiltersView: React.FC = () => {
       <StepLabel>Filter</StepLabel>
       <Select
         value={currentFilter}
-        onChange={(event) => setCurrentFilter(event.target.value as Filter)}
+        onChange={(event) =>
+          setCurrentFilter(event.target.value as MatrixFilter)
+        }
         fullWidth
       >
-        <MenuItem value={'sobel'}>Sobel</MenuItem>
-        <MenuItem value={'median'}>Median</MenuItem>
-        <MenuItem value={'sharpen'}>Sharpen</MenuItem>
-        <MenuItem value={'blur'}>Blur</MenuItem>
-        <MenuItem value={'erosion'}>Erosion</MenuItem>
-        <MenuItem value={'dilation'}>Dilation</MenuItem>
-        <MenuItem value={'grayscale'}>Grayscale</MenuItem>
+        <MenuItem value={MatrixFilter.Sobel}>Sobel</MenuItem>
+        <MenuItem value={MatrixFilter.Median}>Median</MenuItem>
+        <MenuItem value={MatrixFilter.Sharpen}>Sharpen</MenuItem>
+        <MenuItem value={MatrixFilter.Blur}>Blur</MenuItem>
+        <MenuItem value={MatrixFilter.Erosion}>Erosion</MenuItem>
+        <MenuItem value={MatrixFilter.Dilation}>Dilation</MenuItem>
       </Select>
 
       {currentFilter === 'median' && (
@@ -119,4 +118,4 @@ const FiltersView: React.FC = () => {
   );
 };
 
-export default FiltersView;
+export default MatrixFiltersView;

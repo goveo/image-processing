@@ -1,3 +1,4 @@
+import { FilterFunc } from '../../types';
 import MatrixFilter from './matrixFilter';
 
 const sharpenMatrix = [
@@ -6,7 +7,7 @@ const sharpenMatrix = [
   [-1, -1, -1],
 ];
 
-const SharpenFilter = (imageData: ImageData): ImageData =>
+const SharpenFilter: FilterFunc = (imageData) =>
   MatrixFilter(imageData, {
     matrix: sharpenMatrix,
   });

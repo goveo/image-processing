@@ -9,7 +9,7 @@ const erosionMatrix = [
   [e, 1, e],
 ];
 
-const ErosionFilter: FilterFunc = (imageData: ImageData): ImageData =>
+const ErosionFilter: FilterFunc = (imageData) =>
   MatrixFilter(imageData, {
     matrix: erosionMatrix,
     mediator: (iterationPixels) => {
