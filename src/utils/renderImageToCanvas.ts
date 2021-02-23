@@ -2,6 +2,7 @@ const renderImageToCanvas = (
   image: HTMLImageElement,
   canvas: HTMLCanvasElement,
   canvasHeight?: number,
+  mode?: 'default' | 'repeat',
 ): void => {
   const canvasContext = canvas?.getContext('2d');
   if (canvasContext && image && canvas) {
@@ -15,7 +16,15 @@ const renderImageToCanvas = (
       canvas.height = image.height;
       canvas.width = image.width;
     }
-    canvasContext.drawImage(image, 0, 0, canvas.width, canvas.height);
+    if (mode === 'repeat') {
+      const pattern = canvasContext.createPattern(image, 'repeat');
+      if (pattern) {
+        canvasContext.fillStyle = pattern;
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    } else {
+      canvasContext.drawImage(image, 0, 0, canvas.width, canvas.height);
+    }
   }
 };
 

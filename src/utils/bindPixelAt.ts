@@ -1,6 +1,6 @@
 import { PixelData, PixelOffsets } from '../types';
 
-const bindPixelAt = (data: Uint8ClampedArray, width: number) => {
+const bindPixelAt = ({ data, width }: ImageData) => {
   return (x: number, y: number): PixelData => {
     const index = (width * y + x) * 4;
     return {

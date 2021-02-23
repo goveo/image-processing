@@ -53,8 +53,8 @@ const MatrixFilter: FilterFunc<Partial<MatrixFilterOptions>> = (
   if (matrix.length !== matrix[0].length) {
     throw new Error('Matrix must be square');
   }
-  const { width, height, data } = imageData;
-  const pixelAt = bindPixelAt(data, width);
+  const { width, height } = imageData;
+  const pixelAt = bindPixelAt(imageData);
 
   const getPixelValue = (x: number, y: number) => {
     const matrixWidth = matrix.length;

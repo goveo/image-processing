@@ -4,6 +4,7 @@ import IncreaseIntensityView from './views/IntensityView';
 import InvertView from './views/InvertView';
 import MatrixFiltersView from './views/MatrixFiltersView';
 import MergeView from './views/MergeView';
+import SteganographyView from './views/SteganographyView';
 
 export interface Route {
   path: string;
@@ -18,6 +19,7 @@ export enum RouteName {
   COLOR_COMPONENTS = 'COLOR_COMPONENTS',
   MERGE = 'MERGE',
   MATRIX_FILTERS = 'MATRIX_FILTERS',
+  STEGANOGRAPHY = 'STEGANOGRAPHY',
 }
 
 type RoutesDictionary = {
@@ -54,6 +56,11 @@ const Routes: RoutesDictionary = {
     path: '/matrix-filters',
     component: MatrixFiltersView,
     title: 'Matrix filters',
+  },
+  [RouteName.STEGANOGRAPHY]: {
+    path: '/steganography',
+    component: SteganographyView,
+    title: 'Steganography',
   },
 };
 

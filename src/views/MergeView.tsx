@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import StepLabel from '@material-ui/core/StepLabel';
+import Typography from '@material-ui/core/Typography';
 import ImageIcon from '@material-ui/icons/Image';
 import React, {
   useCallback,
@@ -104,7 +105,12 @@ const MergeView: React.FC = () => {
         Select image
       </SelectImageButton>
 
-      <CanvasesBlock>
+      <FlexBlock>
+        <CanvasTitle width={imageCanvas?.width as number}>Image 1</CanvasTitle>
+        <CanvasTitle width={imageCanvas?.width as number}>Merged</CanvasTitle>
+        <CanvasTitle width={imageCanvas?.width as number}>Image 2</CanvasTitle>
+      </FlexBlock>
+      <FlexBlock>
         <canvas ref={leftCanvasRef} />
         {imagePath ? (
           <>
@@ -129,8 +135,7 @@ const MergeView: React.FC = () => {
             />
           </>
         )}
-      </CanvasesBlock>
-
+      </FlexBlock>
       <SettingsBlock>
         <StepLabel>Merge percentage</StepLabel>
         <Slider
@@ -162,8 +167,13 @@ const Block = styled.div`
   margin: 20px 0;
 `;
 
-const CanvasesBlock = styled(Block)`
+const FlexBlock = styled(Block)`
   display: flex;
+`;
+
+const CanvasTitle = styled(Typography)<{ width: number }>`
+  width: ${({ width }) => `${width}px`};
+  text-align: center;
 `;
 
 const SettingsBlock = styled(Block)`
