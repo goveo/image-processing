@@ -2,18 +2,13 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ImageIcon from '@material-ui/icons/Image';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import ImagePicker from '../components/ImagePicker';
-import { ImageContext } from '../context/image/ImageContext';
-import { ImagePath } from '../context/image/types';
+import { ImagePath } from '../store/models/image.model';
+import { RootState } from '../store/store';
 import bindPixelAt from '../utils/bindPixelAt';
 import copyCanvasData from '../utils/copyCanvasData';
 import BinaryFilter from '../utils/filters/binary';
@@ -29,7 +24,9 @@ const SteganographyView: React.FC = () => {
   const watermarkCanvasRef = useRef<HTMLCanvasElement>(null);
   const resultCanvasRef = useRef<HTMLCanvasElement>(null);
 
-  const { imageCanvas } = useContext(ImageContext);
+  const imageCanvas = useSelector<RootState>(
+    (state) => state.image.imageCanvas,
+  ) as HTMLCanvasElement | null;
 
   useEffect(() => {
     if (!imageCanvas || !originalCanvasRef.current) return;
@@ -84,7 +81,10 @@ const SteganographyView: React.FC = () => {
       const watermarkValue = getWatermarkPixel(x, y).alpha > 128 ? 1 : 0;
 
       const binaryBlueString = blue.toString(2);
-      const resultBlue = parseInt(`${binaryBlueString.slice(0, -1)}${watermarkValue}`, 2);
+      const resultBlue = parseInt(
+        `${binaryBlueString.slice(0, -1)}${watermarkValue}`,
+        2,
+      );
 
       pixels.push(red, green, resultBlue, alpha);
 

@@ -1,33 +1,36 @@
 import MaterialContainer from '@material-ui/core/Container';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ImagePicker from './components/ImagePicker';
 import NavigationBar from './components/NavigationBar';
-import { ImageContext } from './context/image/ImageContext';
 import { MenuActions } from './enums';
 import { Routes } from './routes';
+import { ImagePath } from './store/models/image.model';
+import { RootState, store } from './store/store';
 import renderImageToCanvas from './utils/renderImageToCanvas';
 import SelectImageView from './views/SelectImageView';
 
 const canvasHeight = 300;
 
 const AppContainer: React.FC = () => {
-  const { imagePath, setImageCanvas, setImagePath } = useContext(ImageContext);
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setImageCanvas(canvasRef.current);
-  }, [canvasRef, setImageCanvas]);
+  const imagePath = useSelector<RootState>(
+    (state) => state.image.imagePath,
+  ) as ImagePath;
+  const history = useHistory();
 
   const onImageLoad = useCallback(() => {
     if (!imageRef.current || !canvasRef.current) return;
     renderImageToCanvas(imageRef.current, canvasRef.current);
-    setImageCanvas(canvasRef.current);
-  }, [setImageCanvas]);
+    store.dispatch.image.setImageCanvas(canvasRef.current);
+    history.push('/');
+  }, [history]);
 
   useEffect(() => {
     window.require('electron').ipcRenderer.on(MenuActions.OpenFile, () => {
@@ -35,46 +38,48 @@ const AppContainer: React.FC = () => {
     });
   }, []);
 
+  const handleImagePick = useCallback((imagePath: ImagePath) => {
+    store.dispatch.image.setImagePath(imagePath);
+  }, []);
+
   return (
     <Container>
-      <HashRouter>
-        <ImagePicker ref={inputRef} onChange={setImagePath} />
+      <ImagePicker ref={inputRef} onChange={handleImagePick} />
 
-        {imagePath ? (
-          <>
-            <NavigationBar />
-            <MaterialContainer>
-              {imagePath && (
-                <ImagePreviewContainer>
-                  <Image
-                    ref={imageRef}
-                    src={imagePath}
-                    height={canvasHeight}
-                    onLoad={onImageLoad}
-                  />
-                  <Canvas ref={canvasRef} />
-                </ImagePreviewContainer>
-              )}
-
+      {imagePath ? (
+        <>
+          <NavigationBar />
+          <MaterialContainer>
+            {imagePath && (
               <ImagePreviewContainer>
-                <Switch>
-                  {Object.values(Routes)
-                    .map(({ path, component: Component }) => (
-                      <Route
-                        key={path}
-                        path={path}
-                        render={() => <Component />}
-                      />
-                    ))
-                    .reverse()}
-                </Switch>
+                <Image
+                  ref={imageRef}
+                  src={imagePath}
+                  height={canvasHeight}
+                  onLoad={onImageLoad}
+                />
+                <Canvas ref={canvasRef} />
               </ImagePreviewContainer>
-            </MaterialContainer>
-          </>
-        ) : (
-          <SelectImageView />
-        )}
-      </HashRouter>
+            )}
+
+            <ImagePreviewContainer>
+              <Switch>
+                {Object.values(Routes)
+                  .map(({ path, component: Component }) => (
+                    <Route
+                      key={path}
+                      path={path}
+                      render={() => <Component />}
+                    />
+                  ))
+                  .reverse()}
+              </Switch>
+            </ImagePreviewContainer>
+          </MaterialContainer>
+        </>
+      ) : (
+        <SelectImageView />
+      )}
     </Container>
   );
 };

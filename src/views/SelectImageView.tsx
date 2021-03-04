@@ -1,15 +1,19 @@
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ImageIcon from '@material-ui/icons/Image';
-import React, { useContext, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 
 import ImagePicker from '../components/ImagePicker';
-import { ImageContext } from '../context/image/ImageContext';
+import { ImagePath } from '../store/models/image.model';
+import { store } from '../store/store';
 
 const SelectImageView: React.FC = () => {
-  const { setImagePath } = useContext(ImageContext);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleImagePick = useCallback((imagePath: ImagePath) => {
+    store.dispatch.image.setImagePath(imagePath);
+  }, []);
 
   return (
     <Container>
@@ -18,7 +22,7 @@ const SelectImageView: React.FC = () => {
           Select an image for processing
         </Typography>
       </TitleContainer>
-      <ImagePicker ref={inputRef} onChange={setImagePath} />
+      <ImagePicker ref={inputRef} onChange={handleImagePick} />
       <SelectImageButton
         variant="outlined"
         color="primary"

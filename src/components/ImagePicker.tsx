@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { ImagePath } from '../context/image/types';
+import { ImagePath } from '../store/models/image.model';
 
 interface ImagePickerProps {
   hidden?: boolean;

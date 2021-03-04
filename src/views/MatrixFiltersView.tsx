@@ -2,15 +2,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
 import StepLabel from '@material-ui/core/StepLabel';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { ImageContext } from '../context/image/ImageContext';
+import { RootState } from '../store/store';
 import { MatrixFilter } from '../types';
 import BlurFilter from '../utils/filters/blur';
 import DilationFilter from '../utils/filters/dilation';
@@ -26,7 +21,9 @@ const MatrixFiltersView: React.FC = () => {
   );
   const [medianMatrixSize, setMedianMatrixSize] = useState<number>(1);
 
-  const { imageCanvas } = useContext(ImageContext);
+  const imageCanvas = useSelector<RootState>(
+    (state) => state.image.imageCanvas,
+  ) as HTMLCanvasElement | null;
 
   const applyFilter = useCallback(
     (filter: MatrixFilter) => {

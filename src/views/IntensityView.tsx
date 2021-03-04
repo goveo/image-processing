@@ -1,14 +1,9 @@
 import { MenuItem, Select, Slider, StepLabel } from '@material-ui/core';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { ImageContext } from '../context/image/ImageContext';
+import { RootState } from '../store/store';
 import { ColorComponent } from '../types';
 import ColorIntensityFilter from '../utils/filters/colorIntensity';
 import getImageDataFromCanvas from '../utils/imageData/getImageDataFromCanvas';
@@ -21,7 +16,9 @@ const IntensityView: React.FC = () => {
   const [colorComponent, setColorComponent] = useState<ColorComponent>('red');
   const [intensity, setIntensity] = useState<number>(maxIntensity);
 
-  const { imageCanvas } = useContext(ImageContext);
+  const imageCanvas = useSelector<RootState>(
+    (state) => state.image.imageCanvas,
+  ) as HTMLCanvasElement | null;
 
   const increaseComponentIntensity = useCallback(
     (component: ColorComponent, intensity = maxIntensity) => {

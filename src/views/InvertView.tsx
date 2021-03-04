@@ -1,6 +1,7 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
-import { ImageContext } from '../context/image/ImageContext';
+import { RootState } from '../store/store';
 import InvertFilter from '../utils/filters/invert';
 import getImageDataFromCanvas from '../utils/imageData/getImageDataFromCanvas';
 import setImageDataToCanvas from '../utils/imageData/setImageDataToCanvas';
@@ -8,7 +9,9 @@ import setImageDataToCanvas from '../utils/imageData/setImageDataToCanvas';
 const InvertView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const { imageCanvas } = useContext(ImageContext);
+  const imageCanvas = useSelector<RootState>(
+    (state) => state.image.imageCanvas,
+  ) as HTMLCanvasElement | null;
 
   const invertImage = useCallback(() => {
     const canvas = canvasRef.current;

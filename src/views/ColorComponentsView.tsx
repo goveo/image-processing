@@ -1,13 +1,8 @@
-import React, {
-  RefObject,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { RefObject, useCallback, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { ImageContext } from '../context/image/ImageContext';
+import { RootState } from '../store/store';
 import { ColorComponent } from '../types';
 import ColorComponentFilter from '../utils/filters/colorComponent';
 import getImageDataFromCanvas from '../utils/imageData/getImageDataFromCanvas';
@@ -18,7 +13,9 @@ const ColorComponentsView: React.FC = () => {
   const greenCanvasRef = useRef<HTMLCanvasElement>(null);
   const blueCanvasRef = useRef<HTMLCanvasElement>(null);
 
-  const { imageCanvas } = useContext(ImageContext);
+  const imageCanvas = useSelector<RootState>(
+    (state) => state.image.imageCanvas,
+  ) as HTMLCanvasElement | null;
 
   const increaseComponentIntensity = useCallback(
     (canvasRef: RefObject<HTMLCanvasElement>, component: ColorComponent) => {
